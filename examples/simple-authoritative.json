@@ -1,0 +1,91 @@
+{
+	"isAuthoritative": true, // An authoritative application
+	"userCount": 3000, // How many users are there
+	
+	"attributes": { // The attributes we want on users
+		"firstName": {
+			"handler": "RandomHandler",
+			"options": []
+		},
+		"lastName": {
+			"handler": "RandomHandler",
+			"options": []
+		},
+		"displayName": {
+			"handler": "CombinationHandler",
+			"format": "%s %s",
+			"args": ["firstName", "lastName"]
+		},
+		"jobTitle": {
+			"handler": "HeirarchyHandler",
+			"tree": [
+				[ // Level 1 employees
+					{
+						"title": "CEO",
+						"min": "1",
+						"max": "1"
+					}
+				],
+				[ // Level 2 employees
+					{
+						"title": "CFO",
+						"min": "1",
+						"max": "1"
+
+					}
+				],
+				[ // Level 3 employees
+					{
+						"title": "Senior Vice President",
+						"min": "4",
+						"max": "userCount / 500" // 1 SVP per 500 employees
+					}
+				],
+				[ // Level 4 employees
+					{
+						"title": "Vice President",
+						"min": "12",
+						"max": "userCount / 125" // 1 VP per 125 employees
+					}
+				],
+				[ // Level 5 employees
+					{
+						"title": "Senior Project Manager",
+						"maxReports": 
+					},
+					{
+						"title": "Senior Technical Architect",
+						"maxReports": 20
+					}
+				],
+				[ //  Level 6 employees
+					{
+						"title": "Software Developer",
+						"reportsTo": ["Senior Technical Architect"], // Only reports to STA's
+						"maxReports": 1
+					},
+					{
+						"title": "Accountant",
+						"maxReports": 0
+					}
+				],
+				[ // Level 7 employees
+					{
+						"title": "Intern",
+						"reportsTo": ["Software Developer"] // Can't report to accountants, but everybody else could get one
+					}
+				]
+			]
+		},
+		"userID": {
+			"handler": "UserIDHandler",
+			"prefix": "e",
+			"length": 6
+		},
+		"manager": {
+			"handler": "ManagerHandler",
+			"idAttribute": "userID"
+		}
+
+	}
+}
